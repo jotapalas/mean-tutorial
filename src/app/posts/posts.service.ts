@@ -28,6 +28,10 @@ export class PostsService {
   }
 
   addPost(post: Post) {
+    this.http.post<{message: string}>('http://localhost:1337/api/posts', post)
+      .subscribe((res) => {
+        console.log(res.message);
+      });
     this.posts.push(post);
     this.postsUpdated.next([...this.posts]);
   }
