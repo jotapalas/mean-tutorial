@@ -52,9 +52,7 @@ export class PostsService {
 
   updatePost(postId: string, post: Post) {
     this.http.put('http://localhost:1337/api/posts/' + postId, post)
-      .subscribe(response => {
-        console.log(response);
-      });
+      .subscribe(response => {});
   }
 
   deletePost(postId: string) {
