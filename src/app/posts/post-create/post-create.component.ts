@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { Post } from '../post.model';
 import { PostsService } from '../posts.service';
@@ -15,12 +15,30 @@ export class PostCreateComponent implements OnInit {
   enteredContent = '';
   post: Post;
   isLoading = false;
+  form: FormGroup;
   private mode = 'create';
   private postId: string;
 
   constructor(public postsService: PostsService, public route: ActivatedRoute) {}
 
   ngOnInit() {
+    this.form = new FormGroup({
+      title: new FormControl(
+        null,
+        {
+          validators: [
+            Validators.required,
+            Validators.minLength(3)
+          ]
+        }),
+      content: new FormControl(
+        null,
+        {
+          validators: [
+            Validators.required
+          ]
+        })
+    });
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has('postId')) {
         this.mode = 'edit';
@@ -28,6 +46,10 @@ export class PostCreateComponent implements OnInit {
         this.isLoading = true;
         this.postsService.getPost(this.postId).subscribe(postData => {
           this.post = {id: postData._id, title: postData.title, content: postData.content};
+          this.form.setValue({
+            title: this.post.title,
+            content: this.post.content
+          });
           this.isLoading = false;
         });
       } else {
@@ -38,21 +60,21 @@ export class PostCreateComponent implements OnInit {
     });
   }
 
-  onSavePost(form: NgForm) {
-    if (form.invalid) {
+  onSavePost() {
+    if (this.form.invalid) {
       return;
     }
     this.isLoading = true;
     const post: Post = {
       id: this.postId,
-      title: form.value.title,
-      content: form.value.content
+      title: this.form.value.title,
+      content: this.form.value.content
     };
     if (this.mode === 'create') {
       this.postsService.addPost(post);
     } else if (this.mode === 'edit') {
       this.postsService.updatePost(this.postId, post);
     }
-    form.resetForm();
+    this.form.reset();
   }
 }
