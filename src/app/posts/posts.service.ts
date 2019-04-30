@@ -23,7 +23,8 @@ export class PostsService {
           return {
             title: post.title,
             content: post.content,
-            id: post._id
+            id: post._id,
+            imagePath: post.imagePath
           };
         });
       }))
@@ -42,10 +43,19 @@ export class PostsService {
     ('http://localhost:1337/api/posts/' + id);
   }
 
-  addPost(post: Post) {
-    this.http.post<{postId: string}>('http://localhost:1337/api/posts', post)
+  addPost(post: Post, image: File) {
+    const postData = new FormData();
+    postData.append('title', post.title);
+    postData.append('content', post.content);
+    postData.append('image', image, post.title);
+    this.http.post<{postId: string, post: Post}>(
+      'http://localhost:1337/api/posts', postData
+    )
       .subscribe((res) => {
         post.id = res.postId;
+        post.title = res.post.title;
+        post.content = res.post.content;
+        post.imagePath = res.post.imagePath;
         this.posts.push(post);
         this.postsUpdated.next([...this.posts]);
         this.router.navigate(['/']);

@@ -90,10 +90,11 @@ export class PostCreateComponent implements OnInit {
     const post: Post = {
       id: this.postId,
       title: this.form.value.title,
-      content: this.form.value.content
+      content: this.form.value.content,
+      imagePath: null
     };
     if (this.mode === 'create') {
-      this.postsService.addPost(post);
+      this.postsService.addPost(post, this.form.value.image);
     } else if (this.mode === 'edit') {
       this.postsService.updatePost(this.postId, post);
     }
