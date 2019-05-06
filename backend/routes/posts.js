@@ -66,11 +66,20 @@ router.get('/:postId', (req, res, next) => {
   });
 });
 
-router.put('/:postId', (req, res, next) => {
+router.put('/:postId',
+  multer({storage: storage}).single('image'),
+  (req, res, next) =>
+{
+  let imagePath = req.body.imagePath;
+  if (req.file) {
+    const baseUrl = req.protocol + '://' + req.get('host');
+    imagePath = baseUrl + '/img/' + req.file.filename;
+  }
   const post = new Post({
     _id: req.body.id,
     title: req.body.title,
-    content: req.body.content
+    content: req.body.content,
+    imagePath: imagePath
   });
   Post.updateOne({_id: req.params.postId}, post)
   .then(result => {
