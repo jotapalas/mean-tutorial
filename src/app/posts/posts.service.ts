@@ -74,7 +74,10 @@ export class PostsService {
       post.imagePath = image;
       postData = post;
     }
-    this.http.put('http://localhost:1337/api/posts/' + postId, postData)
+    this.http.put<{_id: string, title: string, content: string, imagePath: string}>
+    (
+      'http://localhost:1337/api/posts/' + postId, postData
+    )
       .subscribe(response => {
         const updatedPosts = [...this.posts];
         const oldPostIndex = updatedPosts.findIndex(p => p.id === postId);
