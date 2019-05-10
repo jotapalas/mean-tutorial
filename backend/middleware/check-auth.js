@@ -5,7 +5,14 @@ module.exports = (req, res, next) => {
     const authHeader = req.headers.authorization;
     const splitAuth = authHeader.split(' ');
     const token = splitAuth[splitAuth.length - 1];
-    jwt.verify(token, 'secret_this_should_be_longer');
+    const decodedToken = jwt.verify(
+      token,
+      'secret_this_should_be_longer'
+    );
+    req.userData = {
+      email: decodedToken.email,
+      userId: decodedToken.userId
+    };
     next();
   } catch (error) {
     res.status(401).json({

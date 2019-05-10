@@ -58,7 +58,8 @@ router.post('',
   const post = new Post({
     title: req.body.title,
     content: req.body.content,
-    imagePath: baseUrl + '/img/' + req.file.filename
+    imagePath: baseUrl + '/img/' + req.file.filename,
+    createdBy: req.userData.userId
   });
   post.save().then(result => {
     res.status(201).json({
@@ -96,23 +97,38 @@ router.put('/:postId',
     _id: req.body.id,
     title: req.body.title,
     content: req.body.content,
-    imagePath: imagePath
+    imagePath: imagePath,
+    createdBy: req.userData.userId
   });
-  Post.updateOne({_id: req.params.postId}, post)
+  Post.updateOne({
+    _id: req.params.postId,
+    createdBy: req.userData.userId
+  }, post)
   .then(result => {
-    res.status(200).json(post);
+    if (result.nModified === 1) {
+      res.status(200).json(post);
+    } else {
+      res.status(401).json({ message: 'Unauthorized user' })
+    }
   });
 });
 
 router.delete('/:postId',
   checkAuth,
   (req, res, next) => {
-  Post.deleteOne({_id: req.params.postId})
+  Post.deleteOne({
+    _id: req.params.postId,
+    createdBy: req.userData.userId
+  })
   .then(result => {
-    res.status(200).json({ message: 'Post deleted' });
+    if (result.n === 1) {
+      res.status(200).json(post);
+    } else {
+      res.status(401).json({ message: 'Unauthorized user' })
+    }
   })
   .catch(err => {
-
+    res.status(500).json({ message: 'Interal error', errorDescription: err})
   });
 });
 

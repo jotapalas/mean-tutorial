@@ -26,7 +26,8 @@ export class PostsService {
               title: post.title,
               content: post.content,
               id: post._id,
-              imagePath: post.imagePath
+              imagePath: post.imagePath,
+              createdBy: post.createdBy
             };
           }),
           postCount: postData.maxPosts
@@ -46,7 +47,7 @@ export class PostsService {
   }
 
   getPost(id: string) {
-    return this.http.get<{_id: string, title: string, content: string, imagePath: string}>
+    return this.http.get<{_id: string, title: string, content: string, imagePath: string, createdBy: string}>
     ('http://localhost:1337/api/posts/' + id);
   }
 
