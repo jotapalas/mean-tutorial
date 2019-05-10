@@ -8,7 +8,7 @@ import { NgForm } from '@angular/forms';
 export class SignupComponent {
   isLoading = false;
 
-  onLogin(form: NgForm){
+  onSignup(form: NgForm){
     console.log(form);
   }
 }
