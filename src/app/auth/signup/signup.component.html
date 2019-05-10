@@ -17,10 +17,11 @@
     <mat-form-field>
       <input
         matInput
-        type="password"
-        placeholder="Password"
+        name="password"
         ngModel
+        type="password"
         #passwordInput="ngModel"
+        placeholder="Password"
         required
       >
       <mat-error *ngIf="passwordInput.invalid">Please enter a valid password.</mat-error>
