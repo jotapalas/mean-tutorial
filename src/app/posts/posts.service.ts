@@ -15,7 +15,6 @@ export class PostsService {
 
   getPosts(postsPerPage: number, currentPage: number) {
     const queryParams = `?page=${currentPage}&pageSize=${postsPerPage}`;
-    console.log(queryParams);
     this.http
       .get<{ message: string, posts: any, maxPosts: number }>(
         'http://localhost:1337/api/posts' + queryParams
