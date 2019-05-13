@@ -29,10 +29,12 @@ export class AuthService {
 
   createUser(email: string, password: string) {
     const authData: AuthData = {email, password};
-    this.http.post('http://localhost:1337/api/auth/signup', authData)
-      .subscribe(response => {
-        console.log(response);
-      });
+    return this.http.post('http://localhost:1337/api/auth/signup', authData)
+    .subscribe(() => {
+      this.router.navigate(['/']);
+    }, error => {
+      this.authStatusListener.next(false);
+    });
   }
 
   getAuthStatusListener() {
