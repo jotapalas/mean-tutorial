@@ -61,7 +61,6 @@ export class PostCreateComponent implements OnInit {
             imagePath: postData.imagePath,
             createdBy: postData.createdBy
           };
-          console.log(this.post);
           this.form.setValue({
             title: this.post.title,
             content: this.post.content,
