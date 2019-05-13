@@ -41,7 +41,7 @@ exports.updatePost = (req, res, next) => {
   });
   Post.updateOne({ _id: req.params.id, creator: req.userData.userId }, post)
     .then(result => {
-      if (result.nModified > 0) {
+      if (result.n > 0) {
         res.status(200).json({ message: 'Update successful!' });
       } else {
         res.status(401).json({ message: 'Not authorized!' });
@@ -55,7 +55,6 @@ exports.updatePost = (req, res, next) => {
 };
 
 exports.getPosts = (req, res, next) => {
-  console.log("HOLA");
   const pageSize = +req.query.pagesize;
   const currentPage = +req.query.page;
   const postQuery = Post.find();
