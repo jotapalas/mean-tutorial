@@ -8,7 +8,11 @@ const authRoutes = require('./routes/auth');
 
 const app = express();
 mongoose.connect(
-  'mongodb+srv://jotapalas:BKj5MHaJ3ZVhYLVg@mern-test-1t5ju.mongodb.net/mean-udemy?retryWrites=true',
+  'mongodb+srv://'
+  + process.env.MONGO_ATLAS_USR
+  + ':'
+  + process.env.MONGO_ATLAS_PW
+  + '@mern-test-1t5ju.mongodb.net/mean-udemy?retryWrites=true',
   { useNewUrlParser: true }
 )
 .then(() => {

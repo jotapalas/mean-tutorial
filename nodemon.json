@@ -1,0 +1,7 @@
+{
+  "env": {
+    "MONGO_ATLAS_USR": "jotapalas",
+    "MONGO_ATLAS_PW": "BKj5MHaJ3ZVhYLVg",
+    "JWT_KEY": "secret_this_should_be_longer"
+  }
+}

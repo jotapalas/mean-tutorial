@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
     const token = splitAuth[splitAuth.length - 1];
     const decodedToken = jwt.verify(
       token,
-      'secret_this_should_be_longer'
+      process.env.JWT_KEY
     );
     req.userData = {
       email: decodedToken.email,
